@@ -28,11 +28,12 @@ require_once './includes/routes/albums_routes.php';
 require_once './includes/routes/tracks_routes.php';
 
 //-- Step 6)
-// TODO: And here we define app routes.
+// TODO: And here we define app routes. 
 $app->get("/artists", "handleGetAllArtists");
 $app->get("/artists/{artist_id}", "handleGetArtistById");
 $app->get("/artists/{artist_id}/albums", "handleGetAlbumsByArtistId");
 $app->get("/artists/{artist_id}/albums/{album_id}", "handleGetTrackByArtistAndAlbumId");
+$app->get("/customers/{customer_id}/invoices", "handleGetPurchasedTracksByCustomerId");
 $app->get("/customers", "handleGetAllCustomers");
 
 $app->post("/artists", "handleCreateArtists");

@@ -46,9 +46,10 @@ class TrackModel extends BaseModel {
     }
 
     /**
-     * Retrieve an track by its id.
-     * @param int $track_id the id of the track.
-     * @return array an array containing information about a given track.
+     * Retrieve an track by artist_id and alubm_id.
+     * @param int $artist_id the id of the track.
+     * @param int $album_id the id of the album.
+     * @return array an array containing information about track.
      */
     public function getTrackByArtistAndAlbumId($artist_id, $album_id) {
         $sql = "SELECT album.ArtistId,album.Title ,track.* 
@@ -59,4 +60,22 @@ class TrackModel extends BaseModel {
         $data = $this->run($sql, [":artist_id" => $artist_id, ":album_id" => $album_id])->fetch();
         return $data;
     }
+
+    /**
+     * Retrieve purchased tracks by customer_id.
+     * @param int $customer_id the id of the track.
+     * @return array an array containing information about purchased tracks.
+     */
+    public function getPurchasedTracksByCustomerId($customer_id) {
+        $sql = "SELECT track.* 
+                FROM track 
+                INNER JOIN invoiceline ON invoiceline.TrackId = track.TrackId 
+                INNER JOIN invoice ON invoiceline.InvoiceId = invoice.InvoiceId
+                WHERE invoice.CustomerId = :customer_id ";
+
+        $data = $this->run($sql, [":customer_id" => $customer_id])->fetchAll();
+        return $data;
+    }
+
+
 }

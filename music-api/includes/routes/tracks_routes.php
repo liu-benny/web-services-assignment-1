@@ -41,4 +41,37 @@ function handleGetTrackByArtistAndAlbumId(Request $request, Response $response, 
     return $response->withStatus($response_code);
 }
 
+
+// Callback for HTTP GET  /customers/{customer_id}/invoices
+function handleGetPurchasedTracksByCustomerId(Request $request, Response $response, array $args) {
+    $track_info = array();
+    $response_data = array();
+    $response_code = HTTP_OK;
+    $track_model = new TrackModel();
+
+    // Retreive the customer_id from the request's URI.
+    $customer_id = $args["customer_id"];
+    if (isset($customer_id) ) {
+        // Fetch the info about the specified customer.
+        $track_info = $track_model->getPurchasedTracksByCustomerId($customer_id);
+        if (!$track_info) {
+            // No matches found?
+            $response_data = makeCustomJSONError("resourceNotFound", "No matching record was found for the specified artist.");
+            $response->getBody()->write($response_data);
+            return $response->withStatus(HTTP_NOT_FOUND);
+        }
+    }  
+    // Handle serve-side content negotiation and produce the requested representation.    
+    $requested_format = $request->getHeader('Accept');
+    //--
+    //-- We verify the requested resource representation.    
+    if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
+        $response_data = json_encode($track_info, JSON_INVALID_UTF8_SUBSTITUTE);
+    } else {
+        $response_data = json_encode(getErrorUnsupportedFormat());
+        $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
+    }
+    $response->getBody()->write($response_data);
+    return $response->withStatus($response_code);
+}
 ?>
