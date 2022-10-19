@@ -57,7 +57,7 @@ class TrackModel extends BaseModel {
                 INNER JOIN album ON track.AlbumId = album.AlbumId 
                 WHERE album.ArtistId = :artist_id AND album.AlbumId = :album_id ";
 
-        $data = $this->run($sql, [":artist_id" => $artist_id, ":album_id" => $album_id])->fetch();
+        $data = $this->run($sql, [":artist_id" => $artist_id, ":album_id" => $album_id])->fetchAll();
         return $data;
     }
 

@@ -51,7 +51,7 @@ class AlbumModel extends BaseModel {
      */
     public function getAlbumByArtistId($artist_id) {
         $sql = "SELECT * FROM album WHERE ArtistId =?";
-        $data = $this->run($sql, [$artist_id])->fetch();
+        $data = $this->run($sql, [$artist_id])->fetchAll();
         return $data;
     }
 
