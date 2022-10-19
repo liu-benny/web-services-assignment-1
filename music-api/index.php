@@ -14,6 +14,7 @@ $app = AppFactory::create();
 
 //-- Step 2) Add routing middleware.
 $app->addRoutingMiddleware();
+$app->addBodyParsingMiddleware();
 //-- Step 3) Add error handling middleware.
 $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 //-- Step 4)
@@ -32,6 +33,8 @@ $app->get("/artists/{artist_id}", "handleGetArtistById");
 $app->get("/artists/{artist_id}/albums", "handleGetAlbumsByArtistId");
 $app->get("/customers", "handleGetAllCustomers");
 
+$app->post("/artists", "handleCreateArtists");
+$app->put("/artists", "handleUpdateArtist");
 
 // Define app routes.
 $app->get('/hello/{your_name}', function (Request $request, Response $response, $args) {
