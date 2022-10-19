@@ -22,11 +22,15 @@ $app->setBasePath("/music-api");
 
 //-- Step 5) Include the files containing the definitions of the callbacks.
 require_once './includes/routes/artists_routes.php';
+require_once './includes/routes/customers_routes.php';
+require_once './includes/routes/albums_routes.php';
 
 //-- Step 6)
 // TODO: And here we define app routes.
 $app->get("/artists", "handleGetAllArtists");
 $app->get("/artists/{artist_id}", "handleGetArtistById");
+$app->get("/artists/{artist_id}/albums", "handleGetAlbumsByArtistId");
+$app->get("/customers", "handleGetAllCustomers");
 
 
 // Define app routes.
