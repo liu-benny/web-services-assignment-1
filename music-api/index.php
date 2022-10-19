@@ -21,9 +21,12 @@ $errorMiddleware = $app->addErrorMiddleware(true, true, true);
 $app->setBasePath("/music-api");
 
 //-- Step 5) Include the files containing the definitions of the callbacks.
+require_once './includes/routes/artists_routes.php';
 
 //-- Step 6)
 // TODO: And here we define app routes.
+$app->get("/artists", "handleGetAllArtists");
+$app->get("/artists/{artist_id}", "handleGetArtistById");
 
 
 // Define app routes.
