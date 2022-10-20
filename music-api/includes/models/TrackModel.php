@@ -45,19 +45,72 @@ class TrackModel extends BaseModel {
         return $data;
     }
 
-    /**
+    // /**
+    //  * Retrieve an track by artist_id and alubm_id.
+    //  * @param int $artist_id the id of the track.
+    //  * @param int $album_id the id of the album.
+    //  * @return array an array containing information about track.
+    //  */
+    // public function getTrackByArtistAndAlbumId($artist_id, $album_id) {
+    //     $sql = "SELECT album.Title as Album, 
+    //                     track.Name, track.Composer, track.Milliseconds, track.Bytes, track.UnitPrice, 
+    //                     genre.Name as Genre, mediatype.Name as MediaType 
+    //             FROM track 
+    //             INNER JOIN album ON track.AlbumId = album.AlbumId 
+    //             INNER JOIN genre ON track.GenreId = genre.GenreId
+    //             INNER JOIN mediatype ON track.MediaTypeId = mediatype.MediaTypeId 
+    //             WHERE album.ArtistId = :artist_id AND album.AlbumId = :album_id ";
+
+    //     $data = $this->run($sql, [":artist_id" => $artist_id, ":album_id" => $album_id])->fetchAll();
+    //     return $data;
+    // }
+
+     /**
      * Retrieve an track by artist_id and alubm_id.
      * @param int $artist_id the id of the track.
      * @param int $album_id the id of the album.
+     * @param array $params the query parameters 
      * @return array an array containing information about track.
      */
-    public function getTrackByArtistAndAlbumId($artist_id, $album_id) {
-        $sql = "SELECT album.ArtistId,album.Title ,track.* 
+    public function getTrackByArtistAndAlbumIdWhereLike($artist_id, $album_id,$params) {
+
+        $sql = "SELECT album.Title as Album, 
+                        track.Name, track.Composer, track.Milliseconds, track.Bytes, track.UnitPrice, 
+                        genre.Name as Genre, mediatype.Name as MediaType 
                 FROM track 
                 INNER JOIN album ON track.AlbumId = album.AlbumId 
+                INNER JOIN genre ON track.GenreId = genre.GenreId
+                INNER JOIN mediatype ON track.MediaTypeId = mediatype.MediaTypeId 
                 WHERE album.ArtistId = :artist_id AND album.AlbumId = :album_id ";
 
-        $data = $this->run($sql, [":artist_id" => $artist_id, ":album_id" => $album_id])->fetchAll();
+        if(isset($filter_params['genre']) && isset($filter_params['mediatype'])){
+            $sql = $sql . "AND genre.Name LIKE :genre AND mediatype.Name LIKE :mediatype";
+
+            $data = $this->run($sql, [":artist_id" => $artist_id, 
+                                    ":album_id" => $album_id,
+                                    ":genre" => "%" . $params['genre'] ."%" ,
+                                    ":mediatype" => "%" . $params['mediatype'] ."%" ])->fetchAll();
+        }
+        else if(isset($params['genre'])){
+            $sql = $sql . "AND genre.Name LIKE :genre";
+
+            $data = $this->run($sql, [":artist_id" => $artist_id, 
+                                    ":album_id" => $album_id,
+                                    ":genre" => "%" . $params['genre'] . "%" ])->fetchAll();
+        }
+        else if(isset($params['mediatype'])){
+            $sql = $sql . "AND mediatype.Name LIKE :mediatype";
+
+            $data = $this->run($sql, [":artist_id" => $artist_id, 
+                                    ":album_id" => $album_id,
+                                    ":mediatype" => "%" . $params['mediatype'] . "%"])->fetchAll();
+        }
+        else{
+            $data = $this->run($sql, [":artist_id" => $artist_id, 
+                                    ":album_id" => $album_id])->fetchAll();
+        }
+
+        
         return $data;
     }
 
@@ -67,10 +120,13 @@ class TrackModel extends BaseModel {
      * @return array an array containing information about purchased tracks.
      */
     public function getPurchasedTracksByCustomerId($customer_id) {
-        $sql = "SELECT track.* 
+        $sql = "SELECT track.Name, track.Composer, track.Milliseconds, track.Bytes, track.UnitPrice, 
+                        genre.Name, mediatype.Name  
                 FROM track 
                 INNER JOIN invoiceline ON invoiceline.TrackId = track.TrackId 
                 INNER JOIN invoice ON invoiceline.InvoiceId = invoice.InvoiceId
+                INNER JOIN genre ON track.GenreId = genre.GenreId
+                INNER JOIN mediatype ON track.MediaTypeId = mediatype.MediaTypeId 
                 WHERE invoice.CustomerId = :customer_id ";
 
         $data = $this->run($sql, [":customer_id" => $customer_id])->fetchAll();

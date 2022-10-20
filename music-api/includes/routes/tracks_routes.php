@@ -7,7 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 require_once __DIR__ . './../models/BaseModel.php';
 require_once __DIR__ . './../models/TrackModel.php';
 
-// Callback for HTTP GET /artists/{artist_id}/albums/{album_id}/tracks)
+// Callback for HTTP GET /artists/{artist_id}/albums/{album_id}/tracks
 function handleGetTrackByArtistAndAlbumId(Request $request, Response $response, array $args) {
     $track_info = array();
     $response_data = array();
@@ -18,8 +18,19 @@ function handleGetTrackByArtistAndAlbumId(Request $request, Response $response, 
     $artist_id = $args["artist_id"];
     $album_id = $args["album_id"];
     if (isset($artist_id) && isset($album_id)) {
-        // Fetch the info about the specified artist.
-        $track_info = $track_model->getTrackByArtistAndAlbumId($artist_id,$album_id);
+
+        $filter_params = $request->getQueryParams();
+        $track_info = $track_model->getTrackByArtistAndAlbumIdWhereLike($artist_id,$album_id,$filter_params);
+        // if(isset($filter_params['genre']) || isset($filter_params['mediatype'])){
+        //     // Fetch the list of artists matching the provided genre/mediatype.
+            
+        // }
+        // else{
+        //     // Fetch the info about the specified tracks.
+        //     $track_info = $track_model->getTrackByArtistAndAlbumId($artist_id,$album_id);
+        // }
+
+        
         if (!$track_info) {
             // No matches found?
             $response_data = makeCustomJSONError("resourceNotFound", "No matching record was found for the specified artist.");
