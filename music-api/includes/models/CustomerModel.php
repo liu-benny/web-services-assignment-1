@@ -27,9 +27,9 @@ class CustomerModel extends BaseModel {
      * @param string $customerName 
      * @return array An array containing the matches found.
      */
-    public function getWhereLike($customerName) {
-        $sql = "SELECT * FROM customer WHERE Name LIKE :name";
-        $data = $this->run($sql, [":name" => "%" . $customerName . "%"])->fetchAll();
+    public function getWhereLike($country) {
+        $sql = "SELECT * FROM customer WHERE Country LIKE :country";
+        $data = $this->run($sql, [":country" => "%" . $country . "%"])->fetchAll();
         return $data;
     }
 

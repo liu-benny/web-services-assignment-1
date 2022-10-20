@@ -16,9 +16,9 @@ function handleGetAllCustomers(Request $request, Response $response, array $args
 
     // Retreive the query string parameter from the request's URI.
     $filter_params = $request->getQueryParams();
-    if (isset($filter_params["firstName"])) {
+    if (isset($filter_params["country"])) {
         // Fetch the list of customer matching the provided name.
-        $customer = $customer_model->getWhereLike($filter_params["firstName"]);
+        $customers = $customer_model->getWhereLike($filter_params["country"]);
     } else {
         // No filtering by customer name detected.
         $customers = $customer_model->getAll();
