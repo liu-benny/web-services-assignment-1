@@ -44,4 +44,12 @@ class CustomerModel extends BaseModel {
         return $data;
     }
 
+    public function deleteCustomer($customer_id){
+        // $sql = "DELETE FROM customer WHERE CustomerId = :customer_id";
+        // $data = $this->run($sql, [":customer_id" => $customer_id]);
+        // return $data;
+        $customer = $this->delete("customer",$customer_id);
+        return $customer;
+    }
+
 }

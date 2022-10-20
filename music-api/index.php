@@ -41,6 +41,7 @@ $app->put("/artists", "handleUpdateArtist");
  
 
 $app->delete("/artists/{artist_id}", "handleDeleteArtistById");
+$app->delete("/customers/{customer_id}", "handleDeleteCustomerById");
 
 
 // Define app routes.
