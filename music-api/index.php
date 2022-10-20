@@ -38,6 +38,10 @@ $app->get("/customers", "handleGetAllCustomers");
 
 $app->post("/artists", "handleCreateArtists");
 $app->put("/artists", "handleUpdateArtist");
+ 
+
+$app->delete("/artists/{artist_id}", "handleDeleteArtistById");
+
 
 // Define app routes.
 $app->get('/hello/{your_name}', function (Request $request, Response $response, $args) {

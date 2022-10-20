@@ -52,6 +52,12 @@ class ArtistModel extends BaseModel {
 
     public function updateArtist($artists,$where){
         $artists = $this->update("artist",$artists,$where);
+        return $artists;
+    }
+
+    public function deleteArtist($where){
+        $artist = $this->delete("artist",$where);
+        return $artist;
     }
 
 }
