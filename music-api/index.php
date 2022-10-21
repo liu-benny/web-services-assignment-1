@@ -30,26 +30,40 @@ require_once './includes/routes/tracks_routes.php';
 //-- Step 6)
 // TODO: And here we define app routes. 
 $app->get("/artists", "handleGetAllArtists");
-$app->get("/artists/{artist_id}", "handleGetArtistById");
-$app->get("/artists/{artist_id}/albums", "handleGetAlbumsByArtistId");
-$app->get("/artists/{artist_id}/albums/{album_id}/tracks", "handleGetTrackByArtistAndAlbumId");
-$app->get("/customers/{customer_id}/invoices", "handleGetPurchasedTracksByCustomerId");
-$app->get("/customers", "handleGetAllCustomers");
-
 $app->post("/artists", "handleCreateArtists");
 $app->put("/artists", "handleUpdateArtist");
- 
+$app->delete("/artists", "handleUnsupportedOperation"); // -- Unsupported
 
+$app->get("/artists/{artist_id}", "handleGetArtistById");
+$app->post("/artists/{artist_id}", "handleUnsupportedOperation"); // -- Unsupported
+$app->put("/artists/{artist_id}", "handleUnsupportedOperation"); // -- Unsupported
 $app->delete("/artists/{artist_id}", "handleDeleteArtistById");
+
+$app->get("/artists/{artist_id}/albums", "handleGetAlbumsByArtistId");
+$app->post("/artists/{artist_id}/albums", "handleUnsupportedOperation"); // -- Unsupported
+$app->put("/artists/{artist_id}/albums", "handleUnsupportedOperation"); // -- Unsupported
+$app->delete("/artists/{artist_id}/albums", "handleUnsupportedOperation"); // -- Unsupported
+
+$app->get("/artists/{artist_id}/albums/{album_id}/tracks", "handleGetTrackByArtistAndAlbumId");
+$app->post("/artists/{artist_id}/albums/{album_id}/tracks", "handleUnsupportedOperation"); // -- Unsupported
+$app->put("/artists/{artist_id}/albums/{album_id}/tracks", "handleUnsupportedOperation"); // -- Unsupported
+$app->delete("/artists/{artist_id}/albums/{album_id}/tracks", "handleUnsupportedOperation"); // -- Unsupported
+
+$app->get("/customers", "handleGetAllCustomers");
+$app->post("/customers", "handleUnsupportedOperation"); // -- Unsupported
+$app->put("/customers", "handleUnsupportedOperation"); // -- Unsupported
+$app->delete("/customers", "handleUnsupportedOperation"); // -- Unsupported
+
+$app->get("/customers/{customer_id}", "handleUnsupportedOperation"); // -- Unsupported
+$app->post("/customers/{customer_id}", "handleUnsupportedOperation"); // -- Unsupported
+$app->put("/customers/{customer_id}", "handleUnsupportedOperation"); // -- Unsupported
 $app->delete("/customers/{customer_id}", "handleDeleteCustomerById");
 
+$app->get("/customers/{customer_id}/invoices", "handleGetPurchasedTracksByCustomerId");
+$app->post("/customers/{customer_id}/invoices", "handleUnsupportedOperation"); // -- Unsupported
+$app->put("/customers/{customer_id}/invoices", "handleUnsupportedOperation"); // -- Unsupported
+$app->delete("/customers/{customer_id}/invoices", "handleUnsupportedOperation"); // -- Unsupported
 
-// Define app routes.
-$app->get('/hello/{your_name}', function (Request $request, Response $response, $args) {
-    //var_dump($args);
-    $response->getBody()->write("Hello!" . $args["your_name"]);
-    return $response;
-});
 
 // Run the app.
 $app->run();
