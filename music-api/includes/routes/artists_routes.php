@@ -75,7 +75,7 @@ function handleGetArtistById(Request $request, Response $response, array $args) 
     return $response->withStatus($response_code);
 }
 
-// URI: /artists 
+// URI: PUT /artists 
 function handleCreateArtists(Request $request, Response $response, array $args){
 
     $artist_info = array();
@@ -104,14 +104,15 @@ function handleCreateArtists(Request $request, Response $response, array $args){
     // }
 
     
-    $artist_info = $parsed_data;
+    // $artist_info = $parsed_data;
 
     // Handle serve-side content negotiation and produce the requested representation.    
     $requested_format = $request->getHeader('Accept');
     //--
     //-- We verify the requested resource representation.    
     if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        $response_data = json_encode($artist_info, JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = makeCustomJSONMessage("Created","Record(s) has been successfully created.");
+        // $response_data = json_encode($artist_info, JSON_INVALID_UTF8_SUBSTITUTE);
     } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
@@ -139,14 +140,15 @@ function handleUpdateArtist(Request $request, Response $response, array $args){
         $artist_model->updateArtist($artists_record, array("ArtistId" => $artist['ArtistId']));
     }
 
-    $artist_info = $parsed_data;
+    // $artist_info = $parsed_data;
 
     // Handle serve-side content negotiation and produce the requested representation.    
     $requested_format = $request->getHeader('Accept');
     //--
     //-- We verify the requested resource representation.    
     if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        $response_data = json_encode($artist_info, JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = makeCustomJSONMessage("Updated","Record(s) has been successfully updated.");
+        // $response_data = json_encode($artist_info, JSON_INVALID_UTF8_SUBSTITUTE);
     } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;
@@ -183,7 +185,8 @@ function handleDeleteArtistById(Request $request, Response $response, array $arg
     //--
     //-- We verify the requested resource representation.    
     if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        $response_data = json_encode($artist_info, JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = makeCustomJSONMessage("Deleted","ArtistId " . $artist_id . " has been successfully deleted.");
+        // $response_data = json_encode($artist_info, JSON_INVALID_UTF8_SUBSTITUTE);
     } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;

@@ -33,7 +33,7 @@ function handleGetTrackByArtistAndAlbumId(Request $request, Response $response, 
         
         if (!$track_info) {
             // No matches found?
-            $response_data = makeCustomJSONError(HTTP_NOT FOUND,"resourceNotFound", "No matching record was found for the specified artist.");
+            $response_data = makeCustomJSONError("resourceNotFound", "No matching record was found for the specified artist.");
             $response->getBody()->write($response_data);
             return $response->withStatus(HTTP_NOT_FOUND);
         }

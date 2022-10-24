@@ -37,6 +37,7 @@ function handleGetAllCustomers(Request $request, Response $response, array $args
     return $response->withStatus($response_code);
 }
 
+// Callback for HTTP DELETE /customers/{customer_id}
 function handleDeleteCustomerById(Request $request, Response $response, array $args){
     $customer = array();
     $response_data = array();
@@ -64,7 +65,8 @@ function handleDeleteCustomerById(Request $request, Response $response, array $a
     //--
     //-- We verify the requested resource representation.    
     if ($requested_format[0] === APP_MEDIA_TYPE_JSON) {
-        $response_data = json_encode($customer, JSON_INVALID_UTF8_SUBSTITUTE);
+        $response_data = makeCustomJSONMessage("Deleted","CustomerId " . $customer_id . " has been successfully deleted.");
+        // $response_data = json_encode($customer, JSON_INVALID_UTF8_SUBSTITUTE);
     } else {
         $response_data = json_encode(getErrorUnsupportedFormat());
         $response_code = HTTP_UNSUPPORTED_MEDIA_TYPE;

@@ -120,13 +120,16 @@ class TrackModel extends BaseModel {
      * @return array an array containing information about purchased tracks.
      */
     public function getPurchasedTracksByCustomerId($customer_id) {
-        $sql = "SELECT track.Name, track.Composer, track.Milliseconds, track.Bytes, track.UnitPrice, 
+        $sql = "SELECT  customer.FirstName,customer.LastName,
+                        invoice.InvoiceId,track.Name, track.Composer, track.Milliseconds, track.Bytes, track.UnitPrice, 
+                        invoice.Total, invoice.InvoiceDate as Date, 
                         genre.Name, mediatype.Name  
                 FROM track 
-                INNER JOIN invoiceline ON invoiceline.TrackId = track.TrackId 
-                INNER JOIN invoice ON invoiceline.InvoiceId = invoice.InvoiceId
-                INNER JOIN genre ON track.GenreId = genre.GenreId
-                INNER JOIN mediatype ON track.MediaTypeId = mediatype.MediaTypeId 
+                INNER JOIN invoiceline ON invoiceline.TrackId = track.TrackId  
+                INNER JOIN invoice ON invoiceline.InvoiceId = invoice.InvoiceId 
+                INNER JOIN genre ON track.GenreId = genre.GenreId 
+                INNER JOIN mediatype ON track.MediaTypeId = mediatype.MediaTypeId  
+                INNER JOIN customer ON invoice.CustomerId = customer.CustomerId 
                 WHERE invoice.CustomerId = :customer_id ";
 
         $data = $this->run($sql, [":customer_id" => $customer_id])->fetchAll();

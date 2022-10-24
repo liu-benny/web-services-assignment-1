@@ -33,9 +33,17 @@ function handleInvalidParameter(Request $request, Response $response, $args){
      return $response->withStatus(405);
 }
 
+function makeCustomJSONMessage($title, $message) {
+    $data = array(
+        "title:" => $title,
+        "message:" => $message
+    );    
+    return json_encode($data);
+}
+
 function makeCustomJSONError($error_name, $error_message) {
     $error_data = array(
-        "error:" => $error_code,
+        "error:" => $error_name,
         "message:" => $error_message
     );    
     return json_encode($error_data);
